@@ -113,7 +113,7 @@ def migrate():
                       check=True)
     except CalledProcessError as cp:
         print(f'An error ocurred: {cp}')
-
+#
 def migrateapp():
     name = input('Enter your app name')
     try:
