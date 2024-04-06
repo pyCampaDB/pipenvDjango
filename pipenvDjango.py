@@ -2,6 +2,7 @@ from subprocess import check_call, CalledProcessError, run as runSubprocess, che
 from os.path import exists
 from os import getenv, getcwd
 from pkg_resources import  VersionConflict, DistributionNotFound
+from dotenv import load_dotenv
 
 
 #########################################################################################################################################3
@@ -480,6 +481,7 @@ def upload_github():
 
 
 def run():
+    load_dotenv()
     ensure_pipenv_installed()
     manage_and_use_env()
     option = '1'
@@ -498,7 +500,7 @@ def run():
                             '\n2. Install all packages written in the file'
                             '\n3. Check your packages already installed'
                             '\n4. Restart your virtual environment'
-                            '\n(Other). Exit setting pipenv and run script\n'
+                            '\n(Other). Exit pipenv settings\n'
                             '\nEnter your choice: ')
                 if menu=='1':
                     package = input('\nEnter package name: ')
@@ -515,8 +517,7 @@ def run():
         elif option == '1':
             manage_django()
     
-    from dotenv import load_dotenv
-    load_dotenv()
+    
     docker_option = '9'
     while docker_option not in ['Y', 'y', 'N', 'n']:
         docker_option = input('Do you want to upload this project to Docker? [Y/N]: ')
