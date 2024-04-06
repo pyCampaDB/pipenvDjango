@@ -456,8 +456,6 @@ def upload_github():
         commit = input('Enter commit message: ')
         runSubprocess(f'git commit -m "{commit}"', shell=True, check=True)
 
-        print('\ngit branch\n')
-        runSubprocess('git branch -M main', shell=True, check=True)
         first_upload = ''
         while first_upload not in ['Y', 'y', 'N', 'n']:
             first_upload = input('Enter if it is your first commit [Y/N]: ')
@@ -465,6 +463,8 @@ def upload_github():
                 print('\nInvalid option\n')
         
         if first_upload in ['Y', 'y']:
+            print('\ngit branch\n')
+            runSubprocess('git branch -M main', shell=True, check=True)
             my_git = input('Enter repository name: ')
             print('\nremote add origin\n')
             runSubprocess(f'git remote add origin https://github.com/pyCampaDB/{my_git}.git',
