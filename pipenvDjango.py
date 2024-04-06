@@ -467,12 +467,9 @@ def upload_github():
         if first_upload in ['Y', 'y']:
             my_git = input('Enter repository name: ')
             print('\nremote add origin\n')
-            #
             runSubprocess(f'git remote add origin https://github.com/pyCampaDB/{my_git}.git',
                 shell=True, check=True, capture_output=True)
-        else:
-            print('\npull\n')
-            runSubprocess('git pull origin main', shell=True, check=True)
+
         print('\npush\n')
         runSubprocess(f'git push -u origin main', shell=True, check=True)
         print('\nProject uploaded to GitHub\n')
