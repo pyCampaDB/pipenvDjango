@@ -79,6 +79,7 @@ def delete_pipenv():
     except CalledProcessError as e:
         print(f'An error ocurred: {e.stderr.decode()}')
 
+
 def startproject():
     option = input('Enter your project name: ')
     try:
@@ -113,6 +114,15 @@ def migrate():
     except CalledProcessError as cp:
         print(f'An error ocurred: {cp}')
 
+def migrateapp():
+    name = input('Enter your app name')
+    try:
+        runSubprocess(f'pipenv run python manage.py migrate {name}',
+                      shell=True,
+                      check=True)
+    except CalledProcessError as cp:
+        print(f'An error ocurred: {cp}')
+
 def makemigrations(): 
     try:
         runSubprocess(f'pipenv run python manage.py makemigrations',
@@ -129,12 +139,20 @@ def makemigrationsapp():
                       check=True)
     except CalledProcessError as cp:
         print(f'An error ocurred: {cp}')
+       
+def reversemigrateproject():
+    option = input('Enter your project name: ')
+    try:
+        runSubprocess(f'pipenv run python manage.py migrate {option} zero',
+                      shell=True,
+                      check=True)
+    except CalledProcessError as cp:
+        print(f'An error ocurred: {cp}')
 
-
-def migrate_app():
+def reversemigrateapp():
     option = input('Enter your app name: ')
     try:
-        runSubprocess(f'pipenv run python manage.py migrate {option}',
+        runSubprocess(f'pipenv run python manage.py migrate {option} zero',
                       shell=True,
                       check=True)
     except CalledProcessError as cp:
@@ -157,7 +175,6 @@ def showmigrationsapp():
     except CalledProcessError as cp:
         print(f'An error ocurred: {cp}')
 
-
 def create_superuser():
     try:
         runSubprocess(f'pipenv run python manage.py createsuperuser',
@@ -166,7 +183,89 @@ def create_superuser():
     except CalledProcessError as cp:
         print(f'An error ocurred: {cp}')
 
-def shell_django():
+def djangohelp():
+    try:
+        runSubprocess(f'pipenv run python manage.py help',
+                      shell=True,
+                      check=True)
+    except CalledProcessError as cp:
+        print(f'An error ocurred: {cp}')
+
+def sqlmigrate():
+    try:
+        appname = input('Enter your app name: ')
+        mn = input('Enter the migration number: ')
+        runSubprocess(f'pipenv run python manage.py sqlmigrate {appname} {mn}',
+                      shell=True,
+                      check=True)
+    except CalledProcessError as cp:
+        print(f'An error ocurred: {cp}')
+
+def djangoflush():
+    try:
+        runSubprocess(f'pipenv run python manage.py flush',
+                      shell=True,
+                      check=True)
+    except CalledProcessError as cp:
+        print(f'An error ocurred: {cp}')
+
+def collect_static_files():
+    try:
+        runSubprocess(f'pipenv run python manage.py collectstatic',
+                      shell=True,
+                      check=True)
+    except CalledProcessError as cp:
+        print(f'An error ocurred: {cp}')
+
+def find_static_file():
+    try:
+        runSubprocess(f'pipenv run python manage.py findstatic staticfile',
+                      shell=True,
+                      check=True)
+    except CalledProcessError as cp:
+        print(f'An error ocurred: {cp}')
+
+def clearsessions():
+    try:
+        runSubprocess(f'pipenv run python manage.py clearsessions',
+                      shell=True,
+                      check=True)
+    except CalledProcessError as cp:
+        print(f'An error ocurred: {cp}')
+
+def check_errors():
+    try:
+        runSubprocess(f'pipenv run python manage.py check',
+                      shell=True,
+                      check=True)
+    except CalledProcessError as cp:
+        print(f'An error ocurred: {cp}')
+
+def changepassword():
+    try:
+        runSubprocess(f'pipenv run python manage.py changepassword',
+                      shell=True,
+                      check=True)
+    except CalledProcessError as cp:
+        print(f'An error ocurred: {cp}')
+
+def compilemessages():
+    try:
+        runSubprocess(f'pipenv run python manage.py compilemessages',
+                      shell=True,
+                      check=True)
+    except CalledProcessError as cp:
+        print(f'An error ocurred: {cp}')
+
+def makemessages():
+    try:
+        runSubprocess(f'pipenv run python manage.py makemessages',
+                      shell=True,
+                      check=True)
+    except CalledProcessError as cp:
+        print(f'An error ocurred: {cp}')
+
+def pythonshell():
     try:
         runSubprocess(f'pipenv run python manage.py shell',
                       shell=True,
@@ -174,10 +273,54 @@ def shell_django():
     except CalledProcessError as cp:
         print(f'An error ocurred: {cp}')
 
+def dbshell():
+    try:
+        runSubprocess(f'pipenv run python manage.py dbshell',
+                      shell=True,
+                      check=True)
+    except CalledProcessError as cp:
+        print(f'An error ocurred: {cp}')
+
+def inspectdb():
+    try:
+        runSubprocess(f'pipenv run python manage.py inspectdb',
+                      shell=True,
+                      check=True)
+    except CalledProcessError as cp:
+        print(f'An error ocurred: {cp}')
+
+def load_fixture():
+    name = input('Enter your fixture name: ')
+    try:
+        runSubprocess(f'pipenv run python manage.py loaddata {name}',
+                      shell=True,
+                      check=True)
+    except CalledProcessError as cp:
+        print(f'An error ocurred: {cp}')
+
+def testapp():
+    name = input('Enter your app name: ')
+    try:
+        runSubprocess(f'pipenv run python manage.py test {name}',
+                      shell=True,
+                      check=True)
+    except CalledProcessError as cp:
+        print(f'An error ocurred: {cp}')
+
+def dumpapp():
+    name = input('Enter your app name: ')
+    try:
+        runSubprocess(f'pipenv run python manage.py dumpdata {name}',
+                      shell=True,
+                      check=True)
+    except CalledProcessError as cp:
+        print(f'An error ocurred: {cp}')
 
 def manage_django():
     option = '1'
-    while option in ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11']:
+    while option in ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12',
+                     '13', '14', '15', '16', '17', '18', '19', '20', '21', '22', 
+                     '23', '24', '25', '26', '27', '28']:
         option = input(
             '\n************************** DJANGO SETTINGS **************************\n\n'
               '1. Start project\n'
@@ -185,38 +328,63 @@ def manage_django():
               '3. Run server\n'
               '4. Migrate\n'
               '5. Migrate app\n'
-              '6. Migrate app zero\n'
-              '7. Make migrations\n'
-              '8. Show migrations\n'
-              '9. Show app migrations\n'
-              '10. Create a superuser\n'
-              '11. Enter in the shell manage.py\n'
+              '6. Reverse migration project\n'
+              '7. Reverse migration app\n'
+              '8. Make migrations\n'
+              '9. Make migrations app\n'
+              '10. Show migrations\n'
+              '11. Show app migrations\n'
+              '12. Show the SQL app migration\n'
+              '13. Create a superuser\n'
+              '14. Collect static files\n'
+              '15. Find the absolute path of a static file\n'
+              '16. Compile messages\n'
+              '17. Make messages\n'
+              '18. Check errors\n'
+              '19. Run app test\n'
+              '20. Delete all data of DB\n'
+              '21. Clear the table from expired sessions\n'
+              '22. Inspect the DB\n'
+              '23. Load data from a fixture\n'
+              '24. Create a fixture data app\n'
+              '25. Enter in the Python shell\n'
+              '26. Enter in the DB shell\n'
+              '27. Help\n'
+              '28. Change your password\n'
               '(Other) Exit Django Settings\n\n'
               'Enter your choice: ')
         
-        if option == '1':
-            startproject()
-        elif option == '2':
-            startapp()
-        elif option == '3':
-            runserver()
-        elif option == '4':
-            migrate()
-        elif option == '5':
-            migrate_app()
-        elif option == '6':
-            makemigrationsapp()
-        elif option == '7':
-            makemigrations()
-        elif option == '8':
-            show_migrations()
-        elif option == '9':
-            showmigrationsapp()
-        elif option == '10':
-            create_superuser()
-        elif option == '11':
-            shell_django()
+        if option == '1': startproject()
+        elif option == '2': startapp()
+        elif option == '3': runserver()
+        elif option == '4': migrate()
+        elif option == '5': migrateapp()
+        elif option == '6': reversemigrateproject()
+        elif option == '7': reversemigrateapp()
+        elif option == '8': makemigrations()
+        elif option == '9': makemigrationsapp()
+        elif option == '10': show_migrations()
+        elif option == '11': showmigrationsapp()
+        elif option == '12': sqlmigrate()
+        elif option == '13': create_superuser()
+        elif option == '14': collect_static_files()
+        elif option == '15': find_static_file()
+        elif option == '16': compilemessages()
+        elif option == '17': makemessages()
+        elif option == '18': check_errors()
+        elif option == '19': testapp()
+        elif option == '20': djangoflush()
+        elif option == '21': clearsessions()
+        elif option == '22': inspectdb()
+        elif option == '23': load_fixture()
+        elif option == '24': dumpapp()
+        elif option == '25': pythonshell()
+        elif option == '26': dbshell()
+        elif option == '27': djangohelp()
+        elif option == '28': changepassword()
+
     print('\n***************************************** EXIT DJANGO SETTINGS *****************************************\n')
+
 
 
 
