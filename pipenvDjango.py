@@ -2,10 +2,15 @@ from subprocess import check_call, CalledProcessError, run as runSubprocess, che
 from os.path import exists
 from os import getenv, getcwd
 from pkg_resources import  VersionConflict, DistributionNotFound
-from dotenv import load_dotenv
+from signal import signal, SIGINT
+#from getpass import getpass
 
 
 #########################################################################################################################################3
+# evita salir del script al ejecutar Ctrl+C
+def signal_handler(sign, frame):
+    print('Ctrl+C pressed')
+
 def ensure_pipenv_installed():
     try:
         check_call(['pipenv', '--version'])
@@ -29,8 +34,6 @@ def check_package_installed(package):
         return True
     except CalledProcessError:
         return False
-    
-
 #Function to install a single package using pipenv
 def install_package_with_pipenv(package):
     b = check_package_installed(package)
@@ -64,12 +67,19 @@ def install_packages_from_file_with_pipenv(file):
         myFile.close()
     
 
+def uninstall_package():
+    package = input('Enter the package name: ')
+    try:
+        runSubprocess(f'pipenv uninstall {package}', shell=True, check=True)
+    except CalledProcessError as cp:
+        print(f'An error ocurred: {cp.returncode}')
+
 
 def check_packages_installed():
     try:
         runSubprocess('pipenv graph', shell=True, check=True)
     except CalledProcessError as e:
-        print(f'An error ocurred: {e.stderr.decode()}')
+        print(f'An error ocurred: {e.returncode}')
 
 
 def delete_pipenv():
@@ -78,7 +88,9 @@ def delete_pipenv():
         runSubprocess('del Pipfile', shell=True, check=True)
         runSubprocess('del Pipfile.lock', shell=True, check=True)
     except CalledProcessError as e:
-        print(f'An error ocurred: {e.stderr.decode()}')
+        print(f'An error ocurred: {e.returncode}')
+
+
 
 
 def startproject():
@@ -88,7 +100,7 @@ def startproject():
                       shell=True,
                       check=True)
     except CalledProcessError as cp:
-        print(f'An error ocurred: {cp}')
+        print(f'An error ocurred: {cp.returncode}')
 
 def startapp():
     option = input('Enter your app name: ')
@@ -97,7 +109,7 @@ def startapp():
                       shell=True, 
                       check=True)
     except CalledProcessError as cp:
-        print(f'An error ocurred: {cp}')
+        print(f'An error ocurred: {cp.returncode}')
 
 def runserver():
     try:
@@ -105,7 +117,7 @@ def runserver():
                       shell=True,
                       check=True)
     except CalledProcessError as cp:
-        print(f'An error ocurred: {cp}')
+        print(f'An error ocurred: {cp.returncode}')
 
 def migrate():
     try:
@@ -113,8 +125,8 @@ def migrate():
                       shell=True,
                       check=True)
     except CalledProcessError as cp:
-        print(f'An error ocurred: {cp}')
-#
+        print(f'An error ocurred: {cp.returncode}')
+
 def migrateapp():
     name = input('Enter your app name')
     try:
@@ -122,7 +134,7 @@ def migrateapp():
                       shell=True,
                       check=True)
     except CalledProcessError as cp:
-        print(f'An error ocurred: {cp}')
+        print(f'An error ocurred: {cp.returncode}')
 
 def makemigrations(): 
     try:
@@ -130,7 +142,7 @@ def makemigrations():
                       shell=True,
                       check=True)
     except CalledProcessError as cp:
-        print(f'An error ocurred: {cp}')
+        print(f'An error ocurred: {cp.returncode}')
 
 def makemigrationsapp():
     option = input('Enter your app name: ')
@@ -139,7 +151,7 @@ def makemigrationsapp():
                       shell=True,
                       check=True)
     except CalledProcessError as cp:
-        print(f'An error ocurred: {cp}')
+        print(f'An error ocurred: {cp.returncode}')
        
 def reversemigrateproject():
     option = input('Enter your project name: ')
@@ -148,7 +160,7 @@ def reversemigrateproject():
                       shell=True,
                       check=True)
     except CalledProcessError as cp:
-        print(f'An error ocurred: {cp}')
+        print(f'An error ocurred: {cp.returncode}')
 
 def reversemigrateapp():
     option = input('Enter your app name: ')
@@ -157,7 +169,7 @@ def reversemigrateapp():
                       shell=True,
                       check=True)
     except CalledProcessError as cp:
-        print(f'An error ocurred: {cp}')
+        print(f'An error ocurred: {cp.returncode}')
 
 def show_migrations():
     try:
@@ -165,7 +177,7 @@ def show_migrations():
                       shell=True,
                       check=True)
     except CalledProcessError as cp:
-        print(f'An error ocurred: {cp}')
+        print(f'An error ocurred: {cp.returncode}')
 
 def showmigrationsapp():
     option = input('Enter your app name: ')
@@ -174,7 +186,7 @@ def showmigrationsapp():
                       shell=True,
                       check=True)
     except CalledProcessError as cp:
-        print(f'An error ocurred: {cp}')
+        print(f'An error ocurred: {cp.returncode}')
 
 def create_superuser():
     try:
@@ -182,7 +194,7 @@ def create_superuser():
                       shell=True,
                       check=True)
     except CalledProcessError as cp:
-        print(f'An error ocurred: {cp}')
+        print(f'An error ocurred: {cp.returncode}')
 
 def djangohelp():
     try:
@@ -190,7 +202,7 @@ def djangohelp():
                       shell=True,
                       check=True)
     except CalledProcessError as cp:
-        print(f'An error ocurred: {cp}')
+        print(f'An error ocurred: {cp.returncode}')
 
 def sqlmigrate():
     try:
@@ -200,7 +212,7 @@ def sqlmigrate():
                       shell=True,
                       check=True)
     except CalledProcessError as cp:
-        print(f'An error ocurred: {cp}')
+        print(f'An error ocurred: {cp.returncode}')
 
 def djangoflush():
     try:
@@ -208,7 +220,7 @@ def djangoflush():
                       shell=True,
                       check=True)
     except CalledProcessError as cp:
-        print(f'An error ocurred: {cp}')
+        print(f'An error ocurred: {cp.returncode}')
 
 def collect_static_files():
     try:
@@ -216,7 +228,7 @@ def collect_static_files():
                       shell=True,
                       check=True)
     except CalledProcessError as cp:
-        print(f'An error ocurred: {cp}')
+        print(f'An error ocurred: {cp.returncode}')
 
 def find_static_file():
     try:
@@ -224,7 +236,7 @@ def find_static_file():
                       shell=True,
                       check=True)
     except CalledProcessError as cp:
-        print(f'An error ocurred: {cp}')
+        print(f'An error ocurred: {cp.returncode}')
 
 def clearsessions():
     try:
@@ -232,7 +244,7 @@ def clearsessions():
                       shell=True,
                       check=True)
     except CalledProcessError as cp:
-        print(f'An error ocurred: {cp}')
+        print(f'An error ocurred: {cp.returncode}')
 
 def check_errors():
     try:
@@ -240,7 +252,7 @@ def check_errors():
                       shell=True,
                       check=True)
     except CalledProcessError as cp:
-        print(f'An error ocurred: {cp}')
+        print(f'An error ocurred: {cp.returncode}')
 
 def changepassword():
     try:
@@ -248,7 +260,7 @@ def changepassword():
                       shell=True,
                       check=True)
     except CalledProcessError as cp:
-        print(f'An error ocurred: {cp}')
+        print(f'An error ocurred: {cp.returncode}')
 
 def compilemessages():
     try:
@@ -256,7 +268,7 @@ def compilemessages():
                       shell=True,
                       check=True)
     except CalledProcessError as cp:
-        print(f'An error ocurred: {cp}')
+        print(f'An error ocurred: {cp.returncode}')
 
 def makemessages():
     try:
@@ -264,7 +276,7 @@ def makemessages():
                       shell=True,
                       check=True)
     except CalledProcessError as cp:
-        print(f'An error ocurred: {cp}')
+        print(f'An error ocurred: {cp.returncode}')
 
 def pythonshell():
     try:
@@ -272,7 +284,7 @@ def pythonshell():
                       shell=True,
                       check=True)
     except CalledProcessError as cp:
-        print(f'An error ocurred: {cp}')
+        print(f'An error ocurred: {cp.returncode}')
 
 def dbshell():
     try:
@@ -280,7 +292,7 @@ def dbshell():
                       shell=True,
                       check=True)
     except CalledProcessError as cp:
-        print(f'An error ocurred: {cp}')
+        print(f'An error ocurred: {cp.returncode}')
 
 def inspectdb():
     try:
@@ -288,7 +300,7 @@ def inspectdb():
                       shell=True,
                       check=True)
     except CalledProcessError as cp:
-        print(f'An error ocurred: {cp}')
+        print(f'An error ocurred: {cp.returncode}')
 
 def load_fixture():
     name = input('Enter your fixture name: ')
@@ -297,7 +309,7 @@ def load_fixture():
                       shell=True,
                       check=True)
     except CalledProcessError as cp:
-        print(f'An error ocurred: {cp}')
+        print(f'An error ocurred: {cp.returncode}')
 
 def testapp():
     name = input('Enter your app name: ')
@@ -306,7 +318,7 @@ def testapp():
                       shell=True,
                       check=True)
     except CalledProcessError as cp:
-        print(f'An error ocurred: {cp}')
+        print(f'An error ocurred: {cp.returncode}')
 
 def dumpapp():
     name = input('Enter your app name: ')
@@ -315,9 +327,14 @@ def dumpapp():
                       shell=True,
                       check=True)
     except CalledProcessError as cp:
-        print(f'An error ocurred: {cp}')
+        print(f'An error ocurred: {cp.returncode}')
 
 def manage_django():
+    if not check_package_installed('Django'):
+        try:
+            runSubprocess('pipenv install Django')
+        except CalledProcessError as cp:
+            print(f'An error ocurred: {cp.returncode}')
     option = '1'
     while option in ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12',
                      '13', '14', '15', '16', '17', '18', '19', '20', '21', '22', 
@@ -388,7 +405,6 @@ def manage_django():
 
 
 
-
 def upload_docker():
     username = getenv('DOCKER_USERNAME', default='default_username')
     pwd = getenv('DOCKER_PASSWORD', default='default_password')
@@ -410,7 +426,6 @@ COPY Pipfile Pipfile.lock /app/
 
 #Installing depends in the system
 RUN pipenv install --system --deploy
-
 
 #Copy all the files
 COPY . /app
@@ -436,9 +451,9 @@ CMD pipenv run python pipenvDockerGit.py
 
 
     except CalledProcessError as cp:
-        print(f'CalledProcessError: {cp.stderr}')
+        print(f'CalledProcessError: {cp.returncode}')
     except Exception as e:
-        print(f'Exception: {e}')
+        print(f'Exception: {e.__str__}')
 
 def upload_github():
     try:
@@ -457,6 +472,8 @@ def upload_github():
         commit = input('Enter commit message: ')
         runSubprocess(f'git commit -m "{commit}"', shell=True, check=True)
 
+        print('\ngit branch\n')
+        runSubprocess('git branch -M main', shell=True, check=True)
         first_upload = ''
         while first_upload not in ['Y', 'y', 'N', 'n']:
             first_upload = input('Enter if it is your first commit [Y/N]: ')
@@ -464,43 +481,59 @@ def upload_github():
                 print('\nInvalid option\n')
         
         if first_upload in ['Y', 'y']:
-            print('\ngit branch\n')
-            runSubprocess('git branch -M main', shell=True, check=True)
             my_git = input('Enter repository name: ')
             print('\nremote add origin\n')
+            #
             runSubprocess(f'git remote add origin https://github.com/pyCampaDB/{my_git}.git',
                 shell=True, check=True, capture_output=True)
-
+        else:
+            print('\npull\n')
+            runSubprocess('git pull origin main', shell=True, check=True)
         print('\npush\n')
         runSubprocess(f'git push -u origin main', shell=True, check=True)
         print('\nProject uploaded to GitHub\n')
     except CalledProcessError as cp:
-        print(f'\nCalledProcessError: {cp.stderr}\n')
+        print(f'\nCalledProcessError: {cp.returncode}\n')
     except Exception as e:
-        print(f'Exeption: {e}')
+        print(f'Exeption: {e.__str__}')
 
+
+def cmd():
+    command = input('Enter the script in CMD: ')
+    try:
+        runSubprocess(command, shell=True, check=True)
+    except CalledProcessError as cp:
+        print(f'An error ocurred: {cp.returncode}')
 
 def run():
-    load_dotenv()
+    signal(SIGINT, signal_handler)
+
     ensure_pipenv_installed()
     manage_and_use_env()
     option = '1'
-    while option in ['1', '2']:
-        option = input('\n1. Django Settings'
-                       '\n2. Settings pipenv'
-                       '\n(Other). Exit'
+    while option in ['1', '2', '3', '4', '5']:
+        option = input('\n1. CMD'
+                        '\n2. Django Settings'
+                       '\n3. Settings pipenv'
+                       '\n4. Upload project to Docker Hub'
+                       '\n5. Upload project to GitHub'
+                       '\n(Other). Exit\n'
                        '\nEnter your choice: ')
-        """if option not in ['1', '2']:
-            print('\ninvalid option\n')"""
-        if option == '2':
+        if option == '1':
+            cmd()
+        elif option == '2':
+            manage_django()
+
+        elif option == '3':
             menu = '1'
-            while menu in ['1', '2', '3', '4']:
+            while menu in ['1', '2', '3', '4', '5']:
                 menu = input('\n*********************************** PIPENV SETTINGS ***********************************\n\n'
                             '\n1. Install an only package'
                             '\n2. Install all packages written in the file'
                             '\n3. Check your packages already installed'
-                            '\n4. Restart your virtual environment'
-                            '\n(Other). Exit pipenv settings\n'
+                            '\n4. Uninstall a package'
+                            '\n5. Restart your virtual environment'
+                            '\n(Other). Exit setting pipenv and run script\n'
                             '\nEnter your choice: ')
                 if menu=='1':
                     package = input('\nEnter package name: ')
@@ -508,35 +541,41 @@ def run():
                 elif menu=='2':
                     file = input('\nEnter the file name: ')
                     install_packages_from_file_with_pipenv(file)
-                elif menu=='3':
-                    check_packages_installed()
-                elif menu=='4':
+                elif menu=='3':check_packages_installed()
+                elif menu=='4':uninstall_package()
+                elif menu=='5':
                     delete_pipenv()
                     manage_and_use_env()
             print('\n***************************************** EXIT DJANGO SETTINGS *****************************************\n')
-        elif option == '1':
-            manage_django()
+        
     
     
-    docker_option = '9'
-    while docker_option not in ['Y', 'y', 'N', 'n']:
-        docker_option = input('Do you want to upload this project to Docker? [Y/N]: ')
-        if docker_option not in ['Y', 'y', 'N', 'n']:
-            print('\nInvalid option\n')
-    if docker_option in ['Y', 'y']:
-        upload_docker()
-    else:
-        print('\nDocker pass...\n')
+        elif option in ['4', '5']:
+            from dotenv import load_dotenv
+            load_dotenv()
+            
+            if option == '4':
+                docker_option = '9'
+                while docker_option not in ['Y', 'y', 'N', 'n']:
+                    docker_option = input('Do you want to upload this project to Docker? [Y/N]: ')
+                    if docker_option not in ['Y', 'y', 'N', 'n']:
+                        print('\nInvalid option\n')
+                if docker_option in ['Y', 'y']:
+                    upload_docker()
+                else:
+                    print('\nDocker pass...\n')
 
-    git_option = '9'
-    while git_option not in ['Y', 'y', 'N', 'n']:
-        git_option = input('Do you want to upload this project to GitHub? [Y/N]: ')
-        if git_option not in ['Y', 'y', 'N', 'n']:
-            print('\nInvalid option\n')
-    if git_option in ['Y', 'y']:
-        upload_github()
-    else:
-        print('\nGit pass...\n')
+            elif option == '5':
+
+                git_option = '9'
+                while git_option not in ['Y', 'y', 'N', 'n']:
+                    git_option = input('Do you want to upload this project to GitHub? [Y/N]: ')
+                    if git_option not in ['Y', 'y', 'N', 'n']:
+                        print('\nInvalid option\n')
+                if git_option in ['Y', 'y']:
+                    upload_github()
+                else:
+                    print('\nGit pass...\n')
 
 ############################################# MAIN ##########################################################################
 if __name__ == '__main__':

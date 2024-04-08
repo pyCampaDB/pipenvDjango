@@ -14,7 +14,6 @@ COPY Pipfile Pipfile.lock /app/
 #Installing depends in the system
 RUN pipenv install --system --deploy
 
-
 #Copy all the files
 COPY . /app
 
