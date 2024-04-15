@@ -72,14 +72,14 @@ def uninstall_package():
     try:
         runSubprocess(f'pipenv uninstall {package}', shell=True, check=True)
     except CalledProcessError as cp:
-        print(f'An error ocurred: {cp.returncode}')
+        print(f'An error occurred: {cp.returncode}')
 
 
 def check_packages_installed():
     try:
         runSubprocess('pipenv graph', shell=True, check=True)
     except CalledProcessError as e:
-        print(f'An error ocurred: {e.returncode}')
+        print(f'An error occurred: {e.returncode}')
 
 
 def delete_pipenv():
@@ -88,9 +88,14 @@ def delete_pipenv():
         runSubprocess('del Pipfile', shell=True, check=True)
         runSubprocess('del Pipfile.lock', shell=True, check=True)
     except CalledProcessError as e:
-        print(f'An error ocurred: {e.returncode}')
+        print(f'An error occurred: {e.returncode}')
 
-
+def pipenv_run():
+    opt = input('pipenv run [your command]. [your command] = ')
+    try:
+        runSubprocess(f'pipenv run {opt}', shell=True, check=True)
+    except CalledProcessError as cp:
+        print(f'An error occurred: {cp.returncode}')
 
 
 def startproject():
@@ -100,7 +105,7 @@ def startproject():
                       shell=True,
                       check=True)
     except CalledProcessError as cp:
-        print(f'An error ocurred: {cp.returncode}')
+        print(f'An error occurred: {cp.returncode}')
 
 def startapp():
     option = input('Enter your app name: ')
@@ -109,7 +114,7 @@ def startapp():
                       shell=True, 
                       check=True)
     except CalledProcessError as cp:
-        print(f'An error ocurred: {cp.returncode}')
+        print(f'An error occurred: {cp.returncode}')
 
 def runserver():
     try:
@@ -117,7 +122,7 @@ def runserver():
                       shell=True,
                       check=True)
     except CalledProcessError as cp:
-        print(f'An error ocurred: {cp.returncode}')
+        print(f'An error occurred: {cp.returncode}')
 
 def migrate():
     try:
@@ -125,7 +130,7 @@ def migrate():
                       shell=True,
                       check=True)
     except CalledProcessError as cp:
-        print(f'An error ocurred: {cp.returncode}')
+        print(f'An error occurred: {cp.returncode}')
 
 def migrateapp():
     name = input('Enter your app name')
@@ -134,7 +139,7 @@ def migrateapp():
                       shell=True,
                       check=True)
     except CalledProcessError as cp:
-        print(f'An error ocurred: {cp.returncode}')
+        print(f'An error occurred: {cp.returncode}')
 
 def makemigrations(): 
     try:
@@ -142,7 +147,7 @@ def makemigrations():
                       shell=True,
                       check=True)
     except CalledProcessError as cp:
-        print(f'An error ocurred: {cp.returncode}')
+        print(f'An error occurred: {cp.returncode}')
 
 def makemigrationsapp():
     option = input('Enter your app name: ')
@@ -151,7 +156,7 @@ def makemigrationsapp():
                       shell=True,
                       check=True)
     except CalledProcessError as cp:
-        print(f'An error ocurred: {cp.returncode}')
+        print(f'An error occurred: {cp.returncode}')
        
 def reversemigrateproject():
     option = input('Enter your project name: ')
@@ -160,7 +165,7 @@ def reversemigrateproject():
                       shell=True,
                       check=True)
     except CalledProcessError as cp:
-        print(f'An error ocurred: {cp.returncode}')
+        print(f'An error occurred: {cp.returncode}')
 
 def reversemigrateapp():
     option = input('Enter your app name: ')
@@ -169,7 +174,7 @@ def reversemigrateapp():
                       shell=True,
                       check=True)
     except CalledProcessError as cp:
-        print(f'An error ocurred: {cp.returncode}')
+        print(f'An error occurred: {cp.returncode}')
 
 def show_migrations():
     try:
@@ -177,7 +182,7 @@ def show_migrations():
                       shell=True,
                       check=True)
     except CalledProcessError as cp:
-        print(f'An error ocurred: {cp.returncode}')
+        print(f'An error occurred: {cp.returncode}')
 
 def showmigrationsapp():
     option = input('Enter your app name: ')
@@ -186,7 +191,7 @@ def showmigrationsapp():
                       shell=True,
                       check=True)
     except CalledProcessError as cp:
-        print(f'An error ocurred: {cp.returncode}')
+        print(f'An error occurred: {cp.returncode}')
 
 def create_superuser():
     try:
@@ -194,7 +199,7 @@ def create_superuser():
                       shell=True,
                       check=True)
     except CalledProcessError as cp:
-        print(f'An error ocurred: {cp.returncode}')
+        print(f'An error occurred: {cp.returncode}')
 
 def djangohelp():
     try:
@@ -202,7 +207,7 @@ def djangohelp():
                       shell=True,
                       check=True)
     except CalledProcessError as cp:
-        print(f'An error ocurred: {cp.returncode}')
+        print(f'An error occurred: {cp.returncode}')
 
 def sqlmigrate():
     try:
@@ -212,7 +217,7 @@ def sqlmigrate():
                       shell=True,
                       check=True)
     except CalledProcessError as cp:
-        print(f'An error ocurred: {cp.returncode}')
+        print(f'An error occurred: {cp.returncode}')
 
 def djangoflush():
     try:
@@ -220,7 +225,7 @@ def djangoflush():
                       shell=True,
                       check=True)
     except CalledProcessError as cp:
-        print(f'An error ocurred: {cp.returncode}')
+        print(f'An error occurred: {cp.returncode}')
 
 def collect_static_files():
     try:
@@ -228,7 +233,7 @@ def collect_static_files():
                       shell=True,
                       check=True)
     except CalledProcessError as cp:
-        print(f'An error ocurred: {cp.returncode}')
+        print(f'An error occurred: {cp.returncode}')
 
 def find_static_file():
     try:
@@ -236,7 +241,7 @@ def find_static_file():
                       shell=True,
                       check=True)
     except CalledProcessError as cp:
-        print(f'An error ocurred: {cp.returncode}')
+        print(f'An error occurred: {cp.returncode}')
 
 def clearsessions():
     try:
@@ -244,7 +249,7 @@ def clearsessions():
                       shell=True,
                       check=True)
     except CalledProcessError as cp:
-        print(f'An error ocurred: {cp.returncode}')
+        print(f'An error occurred: {cp.returncode}')
 
 def check_errors():
     try:
@@ -252,7 +257,7 @@ def check_errors():
                       shell=True,
                       check=True)
     except CalledProcessError as cp:
-        print(f'An error ocurred: {cp.returncode}')
+        print(f'An error occurred: {cp.returncode}')
 
 def changepassword():
     try:
@@ -260,7 +265,7 @@ def changepassword():
                       shell=True,
                       check=True)
     except CalledProcessError as cp:
-        print(f'An error ocurred: {cp.returncode}')
+        print(f'An error occurred: {cp.returncode}')
 
 def compilemessages():
     try:
@@ -268,7 +273,7 @@ def compilemessages():
                       shell=True,
                       check=True)
     except CalledProcessError as cp:
-        print(f'An error ocurred: {cp.returncode}')
+        print(f'An error occurred: {cp.returncode}')
 
 def makemessages():
     try:
@@ -276,7 +281,7 @@ def makemessages():
                       shell=True,
                       check=True)
     except CalledProcessError as cp:
-        print(f'An error ocurred: {cp.returncode}')
+        print(f'An error occurred: {cp.returncode}')
 
 def pythonshell():
     try:
@@ -284,7 +289,7 @@ def pythonshell():
                       shell=True,
                       check=True)
     except CalledProcessError as cp:
-        print(f'An error ocurred: {cp.returncode}')
+        print(f'An error occurred: {cp.returncode}')
 
 def dbshell():
     try:
@@ -292,7 +297,7 @@ def dbshell():
                       shell=True,
                       check=True)
     except CalledProcessError as cp:
-        print(f'An error ocurred: {cp.returncode}')
+        print(f'An error occurred: {cp.returncode}')
 
 def inspectdb():
     try:
@@ -300,7 +305,7 @@ def inspectdb():
                       shell=True,
                       check=True)
     except CalledProcessError as cp:
-        print(f'An error ocurred: {cp.returncode}')
+        print(f'An error occurred: {cp.returncode}')
 
 def load_fixture():
     name = input('Enter your fixture name: ')
@@ -309,7 +314,7 @@ def load_fixture():
                       shell=True,
                       check=True)
     except CalledProcessError as cp:
-        print(f'An error ocurred: {cp.returncode}')
+        print(f'An error occurred: {cp.returncode}')
 
 def testapp():
     name = input('Enter your app name: ')
@@ -318,7 +323,7 @@ def testapp():
                       shell=True,
                       check=True)
     except CalledProcessError as cp:
-        print(f'An error ocurred: {cp.returncode}')
+        print(f'An error occurred: {cp.returncode}')
 
 def dumpapp():
     name = input('Enter your app name: ')
@@ -327,51 +332,52 @@ def dumpapp():
                       shell=True,
                       check=True)
     except CalledProcessError as cp:
-        print(f'An error ocurred: {cp.returncode}')
+        print(f'An error occurred: {cp.returncode}')
 
 def manage_django():
     if not check_package_installed('Django'):
         try:
             runSubprocess('pipenv install Django')
         except CalledProcessError as cp:
-            print(f'An error ocurred: {cp.returncode}')
+            print(f'An error occurred: {cp.returncode}')
+         
     option = '1'
     while option in ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12',
-                     '13', '14', '15', '16', '17', '18', '19', '20', '21', '22', 
-                     '23', '24', '25', '26', '27', '28']:
+                        '13', '14', '15', '16', '17', '18', '19', '20', '21', '22', 
+                        '23', '24', '25', '26', '27', '28', '29']:
         option = input(
-            '\n************************** DJANGO SETTINGS **************************\n\n'
-              '1. Start project\n'
-              '2. Start app\n'
-              '3. Run server\n'
-              '4. Migrate\n'
-              '5. Migrate app\n'
-              '6. Reverse migration project\n'
-              '7. Reverse migration app\n'
-              '8. Make migrations\n'
-              '9. Make migrations app\n'
-              '10. Show migrations\n'
-              '11. Show app migrations\n'
-              '12. Show the SQL app migration\n'
-              '13. Create a superuser\n'
-              '14. Collect static files\n'
-              '15. Find the absolute path of a static file\n'
-              '16. Compile messages\n'
-              '17. Make messages\n'
-              '18. Check errors\n'
-              '19. Run app test\n'
-              '20. Delete all data of DB\n'
-              '21. Clear the table from expired sessions\n'
-              '22. Inspect the DB\n'
-              '23. Load data from a fixture\n'
-              '24. Create a fixture data app\n'
-              '25. Enter in the Python shell\n'
-              '26. Enter in the DB shell\n'
-              '27. Help\n'
-              '28. Change your password\n'
-              '(Other) Exit Django Settings\n\n'
-              'Enter your choice: ')
-        
+                '\n************************** DJANGO SETTINGS **************************\n\n'
+                '1. Start project\n'
+                '2. Start app\n'
+                '3. Run server\n'
+                '4. Migrate\n'
+                '5. Migrate app\n'
+                '6. Reverse migration project\n'
+                '7. Reverse migration app\n'
+                '8. Make migrations\n'
+                '9. Make migrations app\n'
+                '10. Show migrations\n'
+                '11. Show app migrations\n'
+                '12. Show the SQL app migration\n'
+                '13. Create a superuser\n'
+                '14. Collect static files\n'
+                '15. Find the absolute path of a static file\n'
+                '16. Compile messages\n'
+                '17. Make messages\n'
+                '18. Check errors\n'
+                '19. Run app test\n'
+                '20. Delete all data of DB\n'
+                '21. Clear the table from expired sessions\n'
+                '22. Inspect the DB\n'
+                '23. Load data from a fixture\n'
+                '24. Create a fixture data app\n'
+                '25. Enter in the Python shell\n'
+                '26. Enter in the DB shell\n'
+                '27. Help\n'
+                '28. Change your password\n'
+                '(Other) Exit Django Settings\n\n'
+                'Enter your choice: ')
+            
         if option == '1': startproject()
         elif option == '2': startapp()
         elif option == '3': runserver()
@@ -426,9 +432,6 @@ COPY Pipfile Pipfile.lock /app/
 
 #Installing depends in the system
 RUN pipenv install --system --deploy
-
-#Install Jupyter
-RUN pip install jupyter ipykernel
 
 #Copy all the files
 COPY . /app
@@ -498,11 +501,11 @@ def upload_github():
 
 
 def cmd():
-    command = input('CMD: ')
+    command = input(f'{getcwd()}: ')
     try:
         runSubprocess(command, shell=True, check=True)
     except CalledProcessError as cp:
-        print(f'An error ocurred: {cp.returncode}')
+        print(f'An error occurred: {cp.returncode}')
     finally:
         return command
 
@@ -524,26 +527,25 @@ def run():
             try:
                 while True:
                     a = cmd()
-                    if a == 'exit':
-                        break
-                    if command == 'exit':
-                        break
-                    
+                    if a.lower() == 'exit':
+                        print('**************************** Exit CMD ************************************')
+                        break                 
             except EOFError:
-                pass
+                print('**************************** Exit CMD ************************************')
         elif option == '2':
             manage_django()
 
         elif option == '3':
             menu = '1'
-            while menu in ['1', '2', '3', '4', '5']:
+            while menu in ['1', '2', '3', '4', '5', '6']:
                 menu = input('\n*********************************** PIPENV SETTINGS ***********************************\n\n'
                             '\n1. Install an only package'
                             '\n2. Install all packages written in the file'
                             '\n3. Check your packages already installed'
                             '\n4. Uninstall a package'
                             '\n5. Restart your virtual environment'
-                            '\n(Other). Exit setting pipenv and run script\n'
+                            '\n6. Execute your pipenv command'
+                            '\n(Other). Exit\n'
                             '\nEnter your choice: ')
                 if menu=='1':
                     package = input('\nEnter package name: ')
@@ -556,6 +558,7 @@ def run():
                 elif menu=='5':
                     delete_pipenv()
                     manage_and_use_env()
+                elif menu=='6': pipenv_run()
             print('\n***************************************** EXIT DJANGO SETTINGS *****************************************\n')
         
     
