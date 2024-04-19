@@ -769,16 +769,24 @@ def upload_github():
             first_upload = input('Enter if it is your first commit [Y/N]: ')
             if first_upload not in ['Y', 'y', 'N', 'n']:
                 print('\nInvalid option\n')
-        
+        branch = 'main'
+        remote = 'origin'
         if first_upload in ['Y', 'y']:
+            branch = input('Enter your branch: ')
+            runSubprocess(f'pipenv run git branch -M {branch}', shell=True, check=True)
+            remote = input('Enter the remote name: ') #Default: origin
             my_git = input('Enter repository name: ')
             print('\nremote add origin\n')
-            #
-            runSubprocess(f'git remote add origin https://github.com/pyCampaDB/{my_git}.git',
+            runSubprocess(f'pipenv run git remote add {remote} https://github.com/pyCampaDB/{my_git}.git',
                 shell=True, check=True, capture_output=True)
-
+            
+        pull = input('Do you want to make a pull? [Y/N]: ')
+        if pull in ['Y', 'y']:
+            print('\npull\n')
+            git_pull(remote, branch)
         print('\npush\n')
-        runSubprocess(f'git push -u origin main', shell=True, check=True)
+        runSubprocess(f'pipenv run git push -u {remote} {branch}', 
+                      shell=True, check=True)
         print('\nProject uploaded to GitHub\n')
     except CalledProcessError as cp:
         print(f'\nCalledProcessError: {cp.returncode}\n')
@@ -861,7 +869,22 @@ def git_merge():
     except CalledProcessError as cp:
         print(f'An error occurred: {cp.returncode}')
 
-
+def git_pull(remote=None, branch=None):
+    if remote == None:
+        remote = input(
+            'Enter the remote name: '
+        )
+    if branch == None:
+        branch = input(
+            'Enter the branch name: '
+        )
+    try:
+        runSubprocess(
+            f'pipenv run git pull {remote} {branch}',
+            shell=True, check=True
+        )
+    except CalledProcessError as cp:
+        print(f'An error occurred: {cp.returncode}')
 
 
 
@@ -881,23 +904,27 @@ def run():
     manage_and_use_env()
     option = '1'
     while option in ['1', '2', '3', '4', '5', '6']:
-        option = input('\n1. CMD'
-                        '\n2. Django Settings'
-                       '\n3. Settings pipenv'
-                       '\n4. Docker'
-                       '\n5. Docker Compose'
-                       '\n6. GIT'
-                       '\n(Other). Exit\n'
-                       '\nEnter your choice: ')
+        option = input(
+            '\n**************************** SETUP ****************************\n'
+            '\n1. CMD'
+            '\n2. Django Settings'
+            '\n3. Settings pipenv'
+            '\n4. Docker'
+            '\n5. Docker Compose'
+            '\n6. GIT'
+            '\n(Other). Exit\n'
+            '\nEnter your choice: ')
         if option == '1':
             try:
                 while True:
                     a = cmd()
                     if a.lower() == 'exit':
-                        print('**************************** Exit CMD ************************************')
                         break                 
             except EOFError:
-                print('**************************** Exit CMD ************************************')
+                pass
+            finally:
+                print('\n**************************** EXIT CMD ************************************\n')
+
         elif option == '2':
             manage_django()
 
@@ -935,7 +962,8 @@ def run():
             
             if option == '4':
                 docker_option = '1'
-                while docker_option in ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11']:
+                while docker_option in ['1', '2', '3', '4', '5', '6', 
+                                        '7', '8', '9', '10', '11']:
                     docker_option = input('\n******************** DOCKER: ********************\n'
                                           '1. Upload an image to Docker Hub\n'
                                           '2. Run a docker container\n'
@@ -967,7 +995,7 @@ def run():
 
             elif option == '6':
                 git_option = '1'
-                while git_option in ['1', '2', '3', '4', '5', '6', '7', '8']:
+                while git_option in ['1', '2', '3', '4', '5', '6', '7', '8', '9']:
                     git_option = input(
                         '\n******************** GIT ********************\n\n'
                         '1. Upload your project to GitHub\n'
@@ -977,7 +1005,8 @@ def run():
                         '5. Send local commits to a remote repository\n'
                         '6. git checkout\n'
                         '7. git merge\n'
-                        '8. Display the availables local branches of the repository'
+                        '8. Display the availables local branches of the repository\n'
+                        '9. git pull'
                         '\n'
                         '(Other) Exit GIT\n\n'
                         'Enter your choice: '
@@ -992,8 +1021,9 @@ def run():
                     elif git_option == '6': git_checkout()
                     elif git_option == '7': git_merge()
                     elif git_option == '8': git_branch()
+                    elif git_option == '9': git_pull()
                 print('\n******************** EXIT GIT ********************\n\n')
-
+    print('\n**************************** END SETUP ****************************\n\n')
 
 ############################################# MAIN ##########################################################################
 if __name__ == '__main__':
