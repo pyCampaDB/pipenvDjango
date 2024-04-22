@@ -347,7 +347,7 @@ def manage_django():
                         '23', '24', '25', '26', '27', '28', '29']:
         option = input(
                 '\n************************** DJANGO SETTINGS **************************\n\n'
-                '1. Start project\n'
+                '1. Start project \n'
                 '2. Start app\n'
                 '3. Run server\n'
                 '4. Migrate\n'
