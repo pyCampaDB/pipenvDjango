@@ -59,8 +59,8 @@ def install_package_with_pipenv(package):
             print(f"\nAn error occurred: {cp.returncode}\n")
 
 #Function to install all packages from a requirements.txt file using pipveng
-def install_packages_from_file_with_pipenv(file):
-    with open (f'{getcwd()}\\{file}.txt', 'r') as myFile:
+def install_packages_from_file_with_pipenv():
+    with open (f'{getcwd()}\\requirements.txt', 'r') as myFile:
         for package in myFile.readlines():
             install_package_with_pipenv(package.strip())
 
@@ -133,7 +133,7 @@ def migrate():
         print(f'An error occurred: {cp.returncode}')
 
 def migrateapp():
-    name = input('Enter your app name')
+    name = input('Enter your app name: ')
     try:
         runSubprocess(f'pipenv run python manage.py migrate {name}',
                       shell=True,
@@ -769,13 +769,12 @@ def upload_github():
             first_upload = input('Enter if it is your first commit [Y/N]: ')
             if first_upload not in ['Y', 'y', 'N', 'n']:
                 print('\nInvalid option\n')
-        remote = 'origin'
         branch = 'main'
-        
+        remote = 'origin'
         if first_upload in ['Y', 'y']:
             remote = input('Enter the remote name: ') #Default: origin
             branch = input('Enter your branch: ')
-            runSubprocess(f'pipenv run git branch -M {branch}', shell=True, check=True)
+            runSubprocess(f'pipenv run git branch -M {branch}', shell=True, check=True)        
             my_git = input('Enter repository name: ')
             print('\nremote add origin\n')
             runSubprocess(f'pipenv run git remote add {remote} https://github.com/pyCampaDB/{my_git}.git',
@@ -802,11 +801,10 @@ def git_remote_v():
     except CalledProcessError as cp:
         print(f'An error occurred: {cp.returncode}')
 
-def git_remote_remove():
-    remote = input('Enter the remote name: ')
+def git_remove_origin():
     try:
         runSubprocess(
-            f'git remote remove {remote}',
+            'git remote remove origin',
             shell=True,
             check=True
         )
@@ -826,16 +824,13 @@ def git_clone():
     except CalledProcessError as cp:
         print(f'An error occurred: {cp.returncode}')
 
-def git_push():
-    remote = input(
-        'Enter the remote name:'
-    )
+def git_push_origin():
     branch = input(
         'Enter the branch name: '
     )
     try:
         runSubprocess(
-            f'git push {remote} {branch}',
+            f'git push origin {branch}',
             shell=True,
             check=True
         )
@@ -891,7 +886,16 @@ def git_pull(remote=None, branch=None):
     except CalledProcessError as cp:
         print(f'An error occurred: {cp.returncode}')
 
-
+def run_script():
+    script = input('Enter the file name: ')
+    try:
+        runSubprocess(
+            f'pipenv run python {script}.py',
+            shell=True,
+            check=True
+        )
+    except CalledProcessError as cp:
+        print(f'An error occurred: {cp.returncode}')
 
 def cmd():
     command = input(f'{getcwd()}: ')
@@ -908,15 +912,16 @@ def run():
     ensure_pipenv_installed()
     manage_and_use_env()
     option = '1'
-    while option in ['1', '2', '3', '4', '5', '6']:
+    while option in ['1', '2', '3', '4', '5', '6', '7']:
         option = input(
             '\n**************************** SETUP ****************************\n'
             '\n1. CMD'
-            '\n2. Django Settings'
-            '\n3. Settings pipenv'
-            '\n4. Docker'
-            '\n5. Docker Compose'
-            '\n6. GIT'
+            '\n2. Run Script'
+            '\n3. Django Settings'
+            '\n4. Settings pipenv'
+            '\n5. Docker'
+            '\n6. Docker Compose'
+            '\n7. GIT'
             '\n(Other). Exit\n'
             '\nEnter your choice: ')
         if option == '1':
@@ -930,15 +935,15 @@ def run():
             finally:
                 print('\n**************************** EXIT CMD ************************************\n')
 
-        elif option == '2':
-            manage_django()
+        elif option == '2': run_script()        
+        elif option == '3': manage_django()
 
-        elif option == '3':
+        elif option == '4':
             menu = '1'
             while menu in ['1', '2', '3', '4', '5', '6']:
                 menu = input('\n*********************************** PIPENV SETTINGS ***********************************\n\n'
                             '\n1. Install an only package'
-                            '\n2. Install all packages written in the file'
+                            '\n2. Install all packages written in the requirements file'
                             '\n3. Check your packages already installed'
                             '\n4. Uninstall a package'
                             '\n5. Restart your virtual environment'
@@ -948,24 +953,22 @@ def run():
                 if menu=='1':
                     package = input('\nEnter package name: ')
                     install_package_with_pipenv(package)
-                elif menu=='2':
-                    file = input('\nEnter the file name: ')
-                    install_packages_from_file_with_pipenv(file)
+                elif menu=='2':install_packages_from_file_with_pipenv()
                 elif menu=='3':check_packages_installed()
                 elif menu=='4':uninstall_package()
                 elif menu=='5':
                     delete_pipenv()
                     manage_and_use_env()
                 elif menu=='6': pipenv_run()
-            print('\n***************************************** EXIT DJANGO SETTINGS *****************************************\n')
+            print('\n***************************************** EXIT PIPENV SETTINGS *****************************************\n')
         
     
     
-        elif option in ['4', '5', '6']:
+        elif option in ['5', '6', '7']:
             from dotenv import load_dotenv
             load_dotenv()
             
-            if option == '4':
+            if option == '5':
                 docker_option = '1'
                 while docker_option in ['1', '2', '3', '4', '5', '6', 
                                         '7', '8', '9', '10', '11']:
@@ -996,9 +999,9 @@ def run():
                     elif docker_option=='11': exec_it()
                     else: print('\n******************** EXIT DOCKER ********************\n')
                 
-            elif option == '5': manage_compose()
+            elif option == '6': manage_compose()
 
-            elif option == '6':
+            elif option == '7':
                 git_option = '1'
                 while git_option in ['1', '2', '3', '4', '5', '6', '7', '8', '9']:
                     git_option = input(
@@ -1020,9 +1023,9 @@ def run():
                     if git_option == '1':
                         upload_github()
                     elif git_option == '2': git_remote_v()
-                    elif git_option == '3': git_remote_remove()
+                    elif git_option == '3': git_remove_origin()
                     elif git_option == '4': git_clone()
-                    elif git_option == '5': git_push()
+                    elif git_option == '5': git_push_origin()
                     elif git_option == '6': git_checkout()
                     elif git_option == '7': git_merge()
                     elif git_option == '8': git_branch()
